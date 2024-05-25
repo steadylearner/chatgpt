@@ -17,7 +17,7 @@
 
 In this post, you will learn how to use ChatGPT with Rust using the official [async-openai-rust] package. 
 
-[You can find the code used here.][Steadylearner ChatGPT repository] It also has examples in other programming languages and blog posts for them.
+[You can find the code used here in this repository.][Steadylearner ChatGPT repository] It also has examples in other programming languages and blog posts for them.
 
 [If you haven't used ChatGPT for images, you might find this useful.][ChatGPT YouTube]
 
