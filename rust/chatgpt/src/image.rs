@@ -39,6 +39,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
         //         &BOT_EMOJI
         //     );
         // }
+
+        // 1.
         println!(
             "\n{} Bot\nCan you describe the image you want to create with details?",
             &BOT_EMOJI
@@ -53,6 +55,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
             break;
         }
 
+        // 2.
         let start_time = Instant::now();
 
         let request = CreateImageRequestArgs::default()

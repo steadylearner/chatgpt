@@ -1,5 +1,8 @@
 // https://github.com/64bit/async-openai/blob/main/examples/assistants/src/main.rs
 
+use std::error::Error;
+use std::time::Instant;
+
 use async_openai::{
     types::{
         CreateAssistantRequestArgs, CreateMessageRequestArgs, CreateRunRequestArgs,
@@ -7,7 +10,6 @@ use async_openai::{
     },
     Client,
 };
-use std::error::Error;
 use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
 use dotenvy::dotenv;
@@ -75,6 +77,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
         if your_message.trim() == "!quit" {
             break;
         }
+
+        let start_time = Instant::now();
 
         // create a message for the thread
         let message = CreateMessageRequestArgs::default()
@@ -163,6 +167,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
             //wait for 1 second before checking the status again
             tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
         }
+
+        let elapsed_time = start_time.elapsed();
+        println!("\n{} Bot\nIt did take {:.2?} to create the response.", &BOT_EMOJI, elapsed_time);
+
     }
 
     // once we have broken from the main loop we can delete the assistant and thread

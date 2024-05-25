@@ -17,7 +17,7 @@
 
 In this post, you will learn how to use ChatGPT with Python using the official [openai-python] package. 
 
-[You can find the code used here.][Steadylearner ChatGPT repository]. 
+[You can find the code used here.][Steadylearner ChatGPT repository] It also has examples in other programming languages and blog posts for them.
 
 [If you haven't used ChatGPT for images, you might find this useful.][ChatGPT YouTube]
 
@@ -75,7 +75,7 @@ You can find more information about OpenAI API usage, billing, and limits at the
 You can install pacakges required for this post with this.
 
 ```console
-pip install openai requests termcolor
+$pip install openai requests termcolor
 ```
 
 If you want to use requirements.txt in the repository instead, you can use this.
@@ -247,7 +247,7 @@ Not so interesting because you can use more features at [ChatGPT] website. There
 
 ### A CLI image creator
 
-The code snippet used here is almost the same to the previous one but we will use **dall-e-3** model to make images.
+The code snippet used here is almost the same to the previous one but we will use **dall-e-3** model to make images. You can use it for profile image, blog cover, logo etc.
 
 ```py
 # $pip install black $black -q .
