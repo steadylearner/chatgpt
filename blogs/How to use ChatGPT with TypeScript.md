@@ -29,7 +29,7 @@ I plan to include more examples with other programming languages, so feel free t
 
 You can skip these and go to **Code** if you have done similar things already.
 
-1. Install JavaScript
+1. Install Node
 2. Set up dev envrionment
 3. Get OpenAI API key
 4. Install required packages

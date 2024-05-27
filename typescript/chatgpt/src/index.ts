@@ -17,7 +17,7 @@ program
 // $yarn test text
 program
   .command("text")
-  .description("Create text based on a prompt")
+  .description("Create a text based on a prompt")
   .action(async () => {
     await createText();
   });
