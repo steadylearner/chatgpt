@@ -30,7 +30,7 @@ I plan to include more examples with other programming languages, so feel free t
 You can skip these and go to **Code** if you have done similar things already.
 
 1. Install Rust
-2. Set up dev envrionment
+2. Set up dev environnment
 3. Get OpenAI API key
 4. Install Rust packages
 
@@ -46,9 +46,9 @@ Depending on OS you use, you might see an instruction to install it.
 
 [You can find more information about the installation process here.](https://doc.rust-lang.org/beta/book/ch01-01-installation.html#installation)
 
-### 2. Set up virtual environment
+### 2. Set up dev environment
 
-Create a Rust virtual environment to manage your dependencies. Here, we will name the environment chatgpt, but you can choose any name
+Create a Rust dev environment to manage your project. Here, we will name the project chatgpt, but you can choose any name.
 
 ```console
 $cargo new chatgpt
