@@ -14,6 +14,7 @@ program
   .version("0.0.1")
   .description("CLI tool for AI text and image");
 
+// $yarn test text
 program
   .command("text")
   .description("Create text based on a prompt")
@@ -21,6 +22,7 @@ program
     await createText();
   });
 
+// $yarn test image
 program
   .command("image")
   .description("Create an image based on a prompt")
