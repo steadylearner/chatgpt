@@ -376,7 +376,7 @@ Steadylearner likely means someone who is constantly learning and seeking knowle
 Anything else I can help?
 ```
 
-So how does it work? There are a few important parts but we will see only important parts.
+So how does it work? There are a few important parts but we will see only important ones.
 
 1. We want to ask questions to the bot until we stop the bot with `Ctrl + C`, `!quit` or others that results in SIGINT signal.
 2. The time for the ChatGPT API to respond varies depending on your question and it might take very long so we will have some feedbacks to decrease response time by measuring how much it takes.
