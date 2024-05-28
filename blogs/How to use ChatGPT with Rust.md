@@ -15,7 +15,7 @@
 
 [ChatGPT YouTube]: https://www.youtube.com/watch?v=JY7H286Jubg
 
-In this post, you will learn how to use ChatGPT with Rust using the official [async-openai-rust] package. 
+In this post, you will learn how to use ChatGPT with Rust using the [async-openai-rust] package. 
 
 [You can find the code used here in this repository.][Steadylearner ChatGPT repository] It also has examples in other programming languages and blog posts for them.
 
@@ -543,8 +543,8 @@ Use these commands and you will see `text` or `image` binary file at your target
 ```console
 $cargo build --bin text --release
 $sudo mv text /usr/local/bin/
-$cargo build --bin text --release
-$sudo mv text /usr/local/bin/
+$cargo build --bin image --release
+$sudo mv image /usr/local/bin/
 
 or
 

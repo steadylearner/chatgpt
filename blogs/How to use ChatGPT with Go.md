@@ -14,7 +14,7 @@
 
 [ChatGPT YouTube]: https://www.youtube.com/watch?v=JY7H286Jubg
 
-In this post, you will learn how to use ChatGPT with Go using the official [openai-go] package. 
+In this post, you will learn how to use ChatGPT with Go using the [openai-go] package. 
 
 [You can find the code used here in this repository.][Steadylearner ChatGPT repository] It also has examples in other programming languages and blog posts for them.
 
@@ -46,7 +46,8 @@ $go version
 Create a Go dev environment. [You can also refer to this.](https://go.dev/doc/tutorial/getting-started)
 
 ```console
-$go mod init chatgpt/main
+$mkdir cli
+$go mod init cli
 ```
 
 Then, paste this to your main.go file.

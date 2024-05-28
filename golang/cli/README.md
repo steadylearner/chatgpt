@@ -46,7 +46,7 @@ $go version
 Create a Go dev environment. [You can also refer to this.](https://go.dev/doc/tutorial/getting-started)
 
 ```console
-$go mod init chatgpt/main
+$go mod init cli
 ```
 
 Then, paste this to your main.go file.
