@@ -28,9 +28,9 @@ async function createImage() {
         quality: QUALITY,
         n: 1,
       });
-      const imageUrl = chatGptResponse.data[0].url;
-
       const endTime = Date.now();
+
+      const imageUrl = chatGptResponse.data[0].url;
 
       botMessage(
         `Here is the link to the image.\n\n${imageUrl}`,
@@ -41,10 +41,10 @@ async function createImage() {
         `It took ${elapsedTime.toFixed(2)} seconds to create the image.\n`
       );
 
-      const saveText = botQuestion(
+      const saveImage = botQuestion(
         `${BOT_EMOJI} Do you want to save it?\n`
       );
-      if (saveText.toLowerCase().startsWith("y")) {
+      if (saveImage.toLowerCase().startsWith("y")) {
         if (!fs.existsSync(IMAGES_FOLDER)) {
           fs.mkdirSync(IMAGES_FOLDER);
         }

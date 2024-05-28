@@ -1,6 +1,5 @@
-<!-- # How to use ChatGPT with Rust -->
+<!-- # How to use ChatGPT with TypeScript -->
 
-[Rust website]: https://www.rust-lang.org
 [ChatGPT]: https://chatgpt.com
 [openai-node]: https://github.com/openai/openai-node
 [openai-api-keys]: https://platform.openai.com/account/api-keys
@@ -56,7 +55,7 @@ Then, respond some questions and you will see these are created in your new chat
 package.json
 ```
 
-[You can include more files similar what you can see here.](https://github.com/steadylearner/chatgpt/tree/main/typescript/chatgpt)
+[You can include more files similar to what you can see here.](https://github.com/steadylearner/chatgpt/tree/main/typescript/chatgpt)
 
 ### 3. Get OpenAI API key
 
@@ -211,12 +210,12 @@ async function createText() {
         messages: [{ role: "user", content: yourMessage }],
         model: "gpt-3.5-turbo",
       });
+      const endTime = Date.now();
+      const elapsedTime = (endTime - startTime) / 1000;
+
       const text = choices[0].message.content;
       botMessage(text);
 
-      const endTime = Date.now();
-
-      const elapsedTime = (endTime - startTime) / 1000;
       botMessage(
         `It took ${elapsedTime.toFixed(2)} seconds to create the response.\n`
       );
@@ -319,7 +318,6 @@ async function createImage() {
 
     if (yourMessage.length > 0) {
       const startTime = Date.now();
-
       const chatGptResponse = await OPENAI_BOT.images.generate({
         model: "dall-e-3",
         prompt: yourMessage,
@@ -327,23 +325,24 @@ async function createImage() {
         quality: QUALITY,
         n: 1,
       });
+      const endTime = Date.now();
+      const elapsedTime = (endTime - startTime) / 1000;
+      
       const imageUrl = chatGptResponse.data[0].url;
 
-      const endTime = Date.now();
 
       botMessage(
         `Here is the link to the image.\n\n${imageUrl}`,
       )
 
-      const elapsedTime = (endTime - startTime) / 1000;
       botMessage(
         `It took ${elapsedTime.toFixed(2)} seconds to create the image.\n`
       );
 
-      const saveText = botQuestion(
+      const saveImage = botQuestion(
         `${BOT_EMOJI} Do you want to save it?\n`
       );
-      if (saveText.toLowerCase().startsWith("y")) {
+      if (saveImage.toLowerCase().startsWith("y")) {
         if (!fs.existsSync(IMAGES_FOLDER)) {
           fs.mkdirSync(IMAGES_FOLDER);
         }
@@ -411,7 +410,7 @@ You can also make your own images.
 
 ## Conclusion
 
-You have learned how to create simple CLIs for text and image using Rust and [openai-node]. 
+You have learned how to create simple CLIs for text and image using TypeScript and [openai-node]. 
 
 You can extend these examples to create more complex applications. 
 
