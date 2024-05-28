@@ -1,3 +1,5 @@
+// $go run . text
+
 package main
 
 import (
@@ -22,9 +24,14 @@ func CreateText() {
 		}
 
 		fmt.Printf("\n%s You\n", USER_EMOJI)
-		var yourMessage = BotQuestion("") // What does steadylearner mean?
+		var yourMessage = strings.TrimSpace(BotQuestion("")) // What does steadylearner mean?
 
-		if strings.TrimSpace(yourMessage) == "!quit" {
+		if len(yourMessage) == 0 {
+			BotMessage("Please, type something.")
+			break
+		}
+
+		if yourMessage == "!quit" {
 			break
 		}
 
@@ -43,15 +50,15 @@ func CreateText() {
 			},
 		)
 
-		endTime := time.Now()
-		duration := endTime.Sub(startTime)
-
-		BotMessage(fmt.Sprintf("It took %v seconds to create the response.", duration))
-
 		if err != nil {
 			BotMessage(fmt.Sprintf("ChatCompletion error: %v\n", err))
 			return
 		}
+
+		endTime := time.Now()
+		duration := endTime.Sub(startTime)
+
+		BotMessage(fmt.Sprintf("It took %v seconds to create the response.", duration))
 
 		var text = resp.Choices[0].Message.Content
 		BotMessage(text)
