@@ -154,7 +154,7 @@ impl Settings {
             text_model: env::var("TEXT_MODEL").unwrap_or_else(|_| "gpt-3.5-turbo".to_string()), // gpt-4o
             texts_folder: env::var("TEXTS_FOLDER").unwrap_or_else(|_| "texts".to_string()),
             text_file_ext: env::var("TEXT_FILE_EXT").unwrap_or_else(|_| "md".to_string()),
-            images_folder: env::var("IMAGES_FOLDER").unwrap_or_else(|_| "./images".to_string()),
+            images_folder: env::var("IMAGES_FOLDER").unwrap_or_else(|_| "images".to_string()),
         }
     }
 }
@@ -533,6 +533,31 @@ y
 The profile and the cover image on this blog was created with it. 
 
 You can also make your own images.
+
+## Make a binary file for the CLI
+
+With Rust, you can easily make a CLI binary file you can easily use with your console.
+
+Use these commands and you will see `text` or `image` binary file at your target/release folder
+
+```console
+$cargo build --bin text --release
+$sudo mv text /usr/local/bin/
+$cargo build --bin text --release
+$sudo mv text /usr/local/bin/
+
+or
+
+$pwd
+$sudo ln -s <YOURS> /usr/local/bin/text
+$sudo ln -s <YOURS> /usr/local/bin/image
+``````
+
+Then, you can use `$text` or `$image` to use the CLI you made here directly regardless of the current path in your console.
+
+You will have to adjust your settings.rs file not to use env variable and the folders you want to save texts and images. 
+
+[You can refer to this post as a reference.](https://www.onlycoiners.com/user/steadylearner/blog/how-to-use-chatgpt-with-go)
 
 ## Conclusion
 

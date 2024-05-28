@@ -524,7 +524,7 @@ You can also make your own images.
 
 ## Make a binary file for the CLI
 
-With Go, you can easily make a CLI binary you can easily use with your console.
+With Go, you can easily make a CLI binary file you can easily use with your console.
 
 Use these commands.
 

@@ -11,11 +11,15 @@ tokio = { version = "1.37.0", features = ["full", "rt-multi-thread"] }
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 
 # $cargo run --bin text
+# $cargo run --bin text --release
+# $cargo build --bin text --release
 [[bin]]
 name = "text"
 path = "src/text.rs"
 
 # $cargo run --bin image
+# $cargo build --bin image --release
+# $cargo run --bin image --release
 [[bin]]
 name = "image"
 path = "src/image.rs"
