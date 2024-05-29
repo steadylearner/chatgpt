@@ -2,9 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
-	"net/http"
-	"os"
 	"strings"
 	"time"
 
@@ -12,82 +9,9 @@ import (
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/storage"
 	"fyne.io/fyne/v2/widget"
 )
-
-func saveImage(url string, w fyne.Window) {
-	imageFolder := "/Users/steadylearner/Desktop/images"
-
-	// Check if the directory exists, if not, create it
-	if _, err := os.Stat(imageFolder); os.IsNotExist(err) {
-		err := os.MkdirAll(imageFolder, os.ModePerm)
-		if err != nil {
-			dialog.ShowError(err, w)
-			return
-		}
-	}
-
-	fileDialog := dialog.NewFileSave(
-		func(writer fyne.URIWriteCloser, _ error) {
-			if writer == nil {
-				return
-			}
-			defer writer.Close()
-
-			response, err := http.Get(url)
-			if err != nil {
-				dialog.ShowError(err, w)
-				return
-			}
-			defer response.Body.Close()
-
-			_, err = io.Copy(writer, response.Body)
-			if err != nil {
-				dialog.ShowError(err, w)
-				return
-			}
-		}, w)
-
-	fileDialog.SetFileName("image.png")
-	fileDialog.SetFilter(storage.NewExtensionFileFilter([]string{".png", ".jpg", ".jpeg"}))
-
-	// Set the initial directory to the specified directory
-	listableURI, err := storage.ListerForURI(storage.NewFileURI(imageFolder))
-	if err == nil {
-		fileDialog.SetLocation(listableURI)
-	}
-
-	fileDialog.Show()
-}
-
-type TappableImage struct {
-	widget.BaseWidget
-	image    *canvas.Image
-	onTapped func()
-}
-
-func NewTappableImage(image *canvas.Image, onTapped func()) *TappableImage {
-	t := &TappableImage{
-		image:    image,
-		onTapped: onTapped,
-	}
-	t.ExtendBaseWidget(t)
-	return t
-}
-
-func (t *TappableImage) Tapped(*fyne.PointEvent) {
-	if t.onTapped != nil {
-		t.onTapped()
-	}
-}
-
-func (t *TappableImage) TappedSecondary(*fyne.PointEvent) {}
-
-func (t *TappableImage) CreateRenderer() fyne.WidgetRenderer {
-	return widget.NewSimpleRenderer(t.image)
-}
 
 func main() {
 	a := app.New()
@@ -103,6 +27,21 @@ func main() {
 	image := canvas.NewImageFromFile("")
 	image.FillMode = canvas.ImageFillContain // Use ImageFillContain to maintain aspect ratio and fit the window
 
+	// resetButton := widget.NewButton("Reset", func() {
+	// 	input.SetText("")
+	// 	description.SetText("")
+	// 	image.File = ""
+	// 	image.Refresh()
+	// })
+
+	// var topNav = container.NewHBox(
+	// 	label,
+	// 	// resetButton,
+	// )
+
+	loading := widget.NewProgressBarInfinite()
+	loading.Hide()
+
 	input.OnSubmitted = func(text string) {
 
 		var yourMessage = strings.TrimSpace(text)
@@ -117,15 +56,22 @@ func main() {
 			return
 		}
 
+		description.SetText("")
+		loading.Show()
+
 		startTime := time.Now()
 		chatGptResponse, err := CreateImage(yourMessage)
 		endTime := time.Now()
 		duration := endTime.Sub(startTime)
 
 		if err != nil {
+			loading.Hide()
 			description.SetText("Error fetching image: " + err.Error())
+
 			return
 		}
+
+		loading.Hide()
 
 		imageUrl := chatGptResponse.Data[0].URL
 
@@ -145,8 +91,10 @@ func main() {
 		})
 
 		content := container.NewVBox(
+			// topNav,
 			label,
 			input,
+			loading,
 			description,
 			tappableImage,
 		)
@@ -156,9 +104,11 @@ func main() {
 	}
 
 	w.SetContent(container.NewVBox(
+		// topNav,
 		label,
 		input,
-		image,
+		loading,
+		description,
 	))
 
 	w.ShowAndRun()
