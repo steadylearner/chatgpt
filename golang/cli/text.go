@@ -58,7 +58,7 @@ func CreateText() {
 		endTime := time.Now()
 		duration := endTime.Sub(startTime)
 
-		BotMessage(fmt.Sprintf("It took %v seconds to create the response.", duration))
+		BotMessage(fmt.Sprintf("It took %v to create the response.", duration))
 
 		var text = resp.Choices[0].Message.Content
 		BotMessage(text)

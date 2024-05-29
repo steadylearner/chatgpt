@@ -53,7 +53,7 @@ func CreateImage() {
 		endTime := time.Now()
 		duration := endTime.Sub(startTime)
 
-		BotMessage(fmt.Sprintf("It took %v seconds to create the image.", duration))
+		BotMessage(fmt.Sprintf("It took %v to create the image.", duration))
 
 		imageUrl := chatGptResponse.Data[0].URL
 		BotMessage(fmt.Sprintf("Here is the link to the image.\n\n%s", imageUrl))

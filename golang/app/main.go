@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 
@@ -10,42 +12,101 @@ import (
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/storage"
 	"fyne.io/fyne/v2/widget"
 )
 
-func fetchRandomImageURL() (string, error) {
-	const imageURL = "https://avatars.githubusercontent.com/u/32325099?v=4"
-	resp, err := http.Get(imageURL)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
+func saveImage(url string, w fyne.Window) {
+	imageFolder := "/Users/steadylearner/Desktop/images"
 
-	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("failed to fetch random image, status code: %d", resp.StatusCode)
+	// Check if the directory exists, if not, create it
+	if _, err := os.Stat(imageFolder); os.IsNotExist(err) {
+		err := os.MkdirAll(imageFolder, os.ModePerm)
+		if err != nil {
+			dialog.ShowError(err, w)
+			return
+		}
 	}
 
-	return resp.Request.URL.String(), nil
+	fileDialog := dialog.NewFileSave(
+		func(writer fyne.URIWriteCloser, _ error) {
+			if writer == nil {
+				return
+			}
+			defer writer.Close()
+
+			response, err := http.Get(url)
+			if err != nil {
+				dialog.ShowError(err, w)
+				return
+			}
+			defer response.Body.Close()
+
+			_, err = io.Copy(writer, response.Body)
+			if err != nil {
+				dialog.ShowError(err, w)
+				return
+			}
+		}, w)
+
+	fileDialog.SetFileName("image.png")
+	fileDialog.SetFilter(storage.NewExtensionFileFilter([]string{".png", ".jpg", ".jpeg"}))
+
+	// Set the initial directory to the specified directory
+	listableURI, err := storage.ListerForURI(storage.NewFileURI(imageFolder))
+	if err == nil {
+		fileDialog.SetLocation(listableURI)
+	}
+
+	fileDialog.Show()
+}
+
+type TappableImage struct {
+	widget.BaseWidget
+	image    *canvas.Image
+	onTapped func()
+}
+
+func NewTappableImage(image *canvas.Image, onTapped func()) *TappableImage {
+	t := &TappableImage{
+		image:    image,
+		onTapped: onTapped,
+	}
+	t.ExtendBaseWidget(t)
+	return t
+}
+
+func (t *TappableImage) Tapped(*fyne.PointEvent) {
+	if t.onTapped != nil {
+		t.onTapped()
+	}
+}
+
+func (t *TappableImage) TappedSecondary(*fyne.PointEvent) {}
+
+func (t *TappableImage) CreateRenderer() fyne.WidgetRenderer {
+	return widget.NewSimpleRenderer(t.image)
 }
 
 func main() {
 	a := app.New()
-	w := a.NewWindow("ChatGPT Image Generator") // Title
-	// Unable to quit
-	// w.SetFullScreen(true)                       // Make the window full screen
-	w.Resize(fyne.NewSize(1440, 900)) // Use your desktop size here.
+	w := a.NewWindow("ChatGPT Image Generator")
 
-	label := widget.NewLabel("Describe the image you want with details")
+	w.Resize(fyne.NewSize(float32(DESKTOP_WIDTH), float32(DESKTOP_HEIGHT))) // Set initial window size
+
+	label := widget.NewLabel("Describe the image with details")
 	input := widget.NewEntry()
 	input.SetPlaceHolder("Enter text...")
 	description := widget.NewLabel("")
 
 	image := canvas.NewImageFromFile("")
-	image.FillMode = canvas.ImageFillOriginal
+	image.FillMode = canvas.ImageFillContain // Use ImageFillContain to maintain aspect ratio and fit the window
 
 	input.OnSubmitted = func(text string) {
+
 		var yourMessage = strings.TrimSpace(text)
+
 		if yourMessage == "" {
 			description.SetText("Please enter some text.")
 			return
@@ -57,7 +118,7 @@ func main() {
 		}
 
 		startTime := time.Now()
-		url, err := fetchRandomImageURL()
+		chatGptResponse, err := CreateImage(yourMessage)
 		endTime := time.Now()
 		duration := endTime.Sub(startTime)
 
@@ -66,28 +127,34 @@ func main() {
 			return
 		}
 
-		parsedUrl, err := storage.ParseURI(url)
+		imageUrl := chatGptResponse.Data[0].URL
+
+		parsedUrl, err := storage.ParseURI(imageUrl)
 		if err != nil {
 			description.SetText("Error parsing URL: " + err.Error())
 			return
 		}
 
 		newImage := canvas.NewImageFromURI(parsedUrl)
-		newImage.FillMode = canvas.ImageFillOriginal
+		newImage.FillMode = canvas.ImageFillContain
+		newImage.SetMinSize(fyne.NewSize(float32(DESKTOP_WIDTH), float32(DESKTOP_HEIGHT))) // Set a minimum size for the image
 		newImage.Refresh()
+
+		tappableImage := NewTappableImage(newImage, func() {
+			saveImage(imageUrl, w)
+		})
 
 		content := container.NewVBox(
 			label,
 			input,
 			description,
-			newImage,
+			tappableImage,
 		)
 
 		w.SetContent(content)
-		description.SetText(fmt.Sprintf("It took %v to create the image.", duration))
+		description.SetText(fmt.Sprintf("It took %v to create the image. Click the image to save it.", duration))
 	}
 
-	// Set initial content with the label, input bar, and placeholder image
 	w.SetContent(container.NewVBox(
 		label,
 		input,
