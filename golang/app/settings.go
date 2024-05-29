@@ -45,7 +45,10 @@ func init() {
 	// $vim ~/.zshrc
 	// export PATH=$PATH:$HOME/go/bin
 	// $source ~/.zshrc
-	// $fyne package -os darwin -icon assets/icon.png // TODO Can we edit the bin name?
+	// $fyne package -os darwin -icon icon.png --name SteadylearnerChatGPT
+	// $fyne package -os darwin -icon icon.png --name ChatGPT
+	// $cd SteadylearnerChatGPT.app/Contents/MacOS && ./app
+	// $cd ChatGPT.app/Contents/MacOS && ./app
 
 	OPENAI_API_KEY = "YOURS"
 
