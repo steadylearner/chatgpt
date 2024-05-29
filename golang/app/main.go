@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -13,10 +14,7 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-// Replace this with CHATGPT things
-// Function to fetch a random image URL
 func fetchRandomImageURL() (string, error) {
-	// Replace this with an actual API endpoint if needed
 	const imageURL = "https://avatars.githubusercontent.com/u/32325099?v=4"
 	resp, err := http.Get(imageURL)
 	if err != nil {
@@ -33,44 +31,60 @@ func fetchRandomImageURL() (string, error) {
 
 func main() {
 	a := app.New()
-	w := a.NewWindow("Random Image Viewer")
+	w := a.NewWindow("ChatGPT Image Generator") // Title
+	// Unable to quit
+	// w.SetFullScreen(true)                       // Make the window full screen
+	w.Resize(fyne.NewSize(1440, 900)) // Use your desktop size here.
 
-	label := widget.NewLabel("Enter text and press Enter:")
+	label := widget.NewLabel("Describe the image you want with details")
 	input := widget.NewEntry()
 	input.SetPlaceHolder("Enter text...")
+	description := widget.NewLabel("")
 
 	image := canvas.NewImageFromFile("")
 	image.FillMode = canvas.ImageFillOriginal
 
-	// Handle input change and fetch random image
 	input.OnSubmitted = func(text string) {
-		if strings.TrimSpace(text) == "" {
-			label.SetText("Please enter some text.")
+		var yourMessage = strings.TrimSpace(text)
+		if yourMessage == "" {
+			description.SetText("Please enter some text.")
 			return
 		}
+
+		if yourMessage == "!quit" {
+			w.Close()
+			return
+		}
+
+		startTime := time.Now()
 		url, err := fetchRandomImageURL()
+		endTime := time.Now()
+		duration := endTime.Sub(startTime)
+
 		if err != nil {
-			label.SetText("Error fetching image: " + err.Error())
+			description.SetText("Error fetching image: " + err.Error())
 			return
 		}
 
-		u, err := storage.ParseURI(url)
+		parsedUrl, err := storage.ParseURI(url)
 		if err != nil {
-			label.SetText("Error parsing URL: " + err.Error())
+			description.SetText("Error parsing URL: " + err.Error())
 			return
 		}
 
-		newImage := canvas.NewImageFromURI(u)
+		newImage := canvas.NewImageFromURI(parsedUrl)
 		newImage.FillMode = canvas.ImageFillOriginal
 		newImage.Refresh()
 
 		content := container.NewVBox(
 			label,
 			input,
+			description,
 			newImage,
 		)
+
 		w.SetContent(content)
-		label.SetText("Showing random image for: " + text)
+		description.SetText(fmt.Sprintf("It took %v to create the image.", duration))
 	}
 
 	// Set initial content with the label, input bar, and placeholder image
@@ -80,6 +94,5 @@ func main() {
 		image,
 	))
 
-	w.Resize(fyne.NewSize(400, 400))
 	w.ShowAndRun()
 }
