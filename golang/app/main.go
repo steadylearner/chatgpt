@@ -23,9 +23,8 @@ func main() {
 
 	w.Resize(fyne.NewSize(float32(DESKTOP_WIDTH), float32(DESKTOP_HEIGHT))) // Set initial window size
 
-	// Set the icon for the application
-	// icon := fyne.NewStaticResource("icon.png", iconData)
-	// w.SetIcon(icon)
+	r, _ := fyne.LoadResourceFromPath("icon.png")
+	w.SetIcon(r)
 
 	label := widget.NewLabel("Describe the image with details")
 	input := widget.NewEntry()
