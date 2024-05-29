@@ -37,7 +37,9 @@ func init() {
 	}
 
 	// PROD
-	// OPENAI_API_KEY = "YOURS"
+	// $go build -o chatgpt
+	// $./chatgpt
+	OPENAI_API_KEY = "YOURS"
 
 	OPENAI_BOT = openai.NewClient(OPENAI_API_KEY)
 }

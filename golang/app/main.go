@@ -1,6 +1,7 @@
 package main
 
 import (
+	// _ "embed"
 	"fmt"
 	"strings"
 	"time"
@@ -13,11 +14,18 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+// go:embed assets/icon.png
+// var iconData []byte
+
 func main() {
 	a := app.New()
 	w := a.NewWindow("ChatGPT Image Generator")
 
 	w.Resize(fyne.NewSize(float32(DESKTOP_WIDTH), float32(DESKTOP_HEIGHT))) // Set initial window size
+
+	// Set the icon for the application
+	// icon := fyne.NewStaticResource("icon.png", iconData)
+	// w.SetIcon(icon)
 
 	label := widget.NewLabel("Describe the image with details")
 	input := widget.NewEntry()
