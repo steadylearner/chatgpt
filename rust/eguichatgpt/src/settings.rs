@@ -15,14 +15,23 @@ pub struct Settings {
 
 impl Settings {
     pub fn new() -> Self {
-        dotenv().expect(".env file not found");
+        // Use .env to test
+        // dotenv().expect(".env file not found");
+
+        // Settings {
+        //     app_name: "ChatGPT Image Generator".to_string(),
+        //     desktop_width: 300.0,
+        //     desktop_height: 400.0,
+        //     openai_api_key: env::var("OPENAI_API_KEY").expect("OPENAI_API_KEY must be set"),
+        //     images_folder: env::var("IMAGES_FOLDER").unwrap_or_else(|_| "images".to_string()),
+        // }
 
         Settings {
             app_name: "ChatGPT Image Generator".to_string(),
             desktop_width: 300.0,
             desktop_height: 400.0,
-            openai_api_key: env::var("OPENAI_API_KEY").expect("OPENAI_API_KEY must be set"),
-            images_folder: env::var("IMAGES_FOLDER").unwrap_or_else(|_| "images".to_string()),
+            openai_api_key: "yours".to_string(),
+            images_folder: "yours".to_string(), // Users/steadylearner/Desktop/images
         }
     }
 }

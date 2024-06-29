@@ -14,14 +14,14 @@ use image::fetch_image_url;
 mod file;
 use file::download_and_save_file;
 
-struct MyApp {
+struct SteadylearnerChatGptApp {
     input: String,
     description: Arc<Mutex<Option<String>>>,
     image: Arc<Mutex<Option<String>>>,
     loading: Arc<Mutex<bool>>,
 }
 
-impl Default for MyApp {
+impl Default for SteadylearnerChatGptApp {
     fn default() -> Self {
         Self {
             input: "".to_owned(),
@@ -32,7 +32,7 @@ impl Default for MyApp {
     }
 }
 
-impl eframe::App for MyApp {
+impl eframe::App for SteadylearnerChatGptApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
             let button_text_style = egui::TextStyle::Button;
@@ -145,6 +145,11 @@ impl eframe::App for MyApp {
 
 // $cargo new eguichatgpt
 // $cargo watch -x 'run --release'
+
+// $cargo install cargo-bundle
+// $cargo bundle --release
+// Edit Cargo.toml
+// https://github.com/burtonageo/cargo-bundle
 fn main() -> eframe::Result<(), eframe::Error> {
     env_logger::init(); 
 
@@ -164,7 +169,7 @@ fn main() -> eframe::Result<(), eframe::Error> {
             options,
             Box::new(|cc| {
                 egui_extras::install_image_loaders(&cc.egui_ctx);
-                Box::<MyApp>::default()
+                Box::<SteadylearnerChatGptApp>::default()
             }),
         )
     })

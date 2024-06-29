@@ -1,7 +1,21 @@
 [package]
 name = "eguichatgpt"
+description = "An example ChatGPT Rust egui application by Steadylearner"
 version = "0.1.0"
 edition = "2021"
+
+# https://crates.io/category_slugs
+[package.metadata.bundle]
+name = "ChatGPT"
+# name = "SteadylearnerChatGPT"
+icon = ["icon.png"]
+version = "1.0.0"
+copyright = "Copyright steadylearnerdev@gmail.com. All rights reserved."
+category = "Developer Tool"
+short_description = "An example ChatGPT Rust egui application by Steadylearner"
+long_description = """
+An example ChatGPT Rust egui application by Steadylearner
+"""
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
