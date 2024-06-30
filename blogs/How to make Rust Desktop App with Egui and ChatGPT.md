@@ -31,6 +31,10 @@ I plan to include more examples with other programming languages, so feel free t
 [You can also hire me if you need a 
 full stack developer for your projects.][Hire me]
 
+The app you will test will be similar to this. You will be able to use it to make a social media profile, blog cover, community image and more.
+
+![Rust Desktop App Example](https://github.com/steadylearner/chatgpt/blob/main/blogs/images/rustdesktopappexample.png?raw=true)
+
 ## Prerequisites
 
 You can skip these and go to **Code** if you have done similar things already.
@@ -42,7 +46,7 @@ You can skip these and go to **Code** if you have done similar things already.
 
 ### 1. Install Rust
 
-If you don't already have Rust installed, visit the [Rust website] and follow the guide to download it. To check if Rust is installed, use your console and type this.
+If you haven't installed Rust yet, visit the [Rust website] and follow the guide to download it. To check if it is installed, use your console and type this.
 
 ```console
 $rustc --version
@@ -54,7 +58,7 @@ Depending on OS you use, you might see an instruction to install it.
 
 ### 2. Set up dev environment
 
-Create a Rust dev environment to manage your project. Here, we will name the project chatgpt, but you can choose any name.
+Create a Rust dev environment to manage your project. Here, we will name the project eguichatgpt, but you can choose any name.
 
 ```console
 $cargo new eguichatgpt
@@ -89,7 +93,7 @@ You can find more information about OpenAI API usage, billing, and limits at the
 
 ### 4. Install Rust packages
 
-You can install pacakges required for this post with Cargo.toml similar to this.
+You can prepare Rust pacakges required for this post with Cargo.toml similar to this.
 
 ```toml
 [package]
@@ -140,6 +144,7 @@ First, create a .env file in your chatgpt folder with the following text.
 
 ```console
 OPENAI_API_KEY=<YOURS>
+IMAGES_FOLDER=<YOURS>
 ```
 
 Then, create a settings.rs file to manage your settings.
@@ -163,29 +168,29 @@ pub struct Settings {
 impl Settings {
     pub fn new() -> Self {
         // Use .env to test
-        // dotenv().expect(".env file not found");
+        dotenv().expect(".env file not found");
 
-        // Settings {
-        //     app_name: "ChatGPT Image Generator".to_string(),
-        //     desktop_width: 300.0,
-        //     desktop_height: 400.0,
-        //     openai_api_key: env::var("OPENAI_API_KEY").expect("OPENAI_API_KEY must be set"),
-        //     images_folder: env::var("IMAGES_FOLDER").unwrap_or_else(|_| "images".to_string()),
-        // }
-
-        // Use this for production
         Settings {
             app_name: "ChatGPT Image Generator".to_string(),
             desktop_width: 300.0,
             desktop_height: 400.0,
-            openai_api_key: "yours".to_string(),
-            images_folder: "yours".to_string(), // Users/steadylearner/Desktop/images
+            openai_api_key: env::var("OPENAI_API_KEY").expect("OPENAI_API_KEY must be set"),
+            images_folder: env::var("IMAGES_FOLDER").unwrap_or_else(|_| "images".to_string()),
         }
+
+        // Use this for production
+        // Settings {
+        //     app_name: "ChatGPT Image Generator".to_string(),
+        //     desktop_width: 300.0,
+        //     desktop_height: 400.0,
+        //     openai_api_key: "yours".to_string(),
+        //     images_folder: "yours".to_string(), // Users/steadylearner/Desktop/images
+        // }
     }
 }
 ```
 
-You can use your own openai_api_key and images folder that you want to save images later.
+You can use your own openai_api_key and images folder that you want to save files instead.
 
 ### A Desktop app
 
@@ -386,9 +391,9 @@ impl Default for SteadylearnerChatGptApp {
 }
 ```
 
-`Arc<Mutex>` is used for some of them to update app state with some async code for openai. In your app without any async call, String or bool data type without it should work.
+Here, `Arc<Mutex>` is used for some data to update app state with async code.
 
-Then, we have the `main` function that starts the gui app.
+Then, we have the `main` function that starts the Egui gui app.
 
 ```rs
 use tokio::runtime::Runtime;
@@ -419,11 +424,11 @@ fn main() -> eframe::Result<(), eframe::Error> {
 }
 ```
 
-`runtime` relevant things is what helps you to use async code inside egui app with `tokio::task::spawn` and `await`.
+`runtime` relevant things are what helps you to use async code inside egui app with `tokio::task::spawn` and `await` etc.
 
-`egui_extras::install_image_loaders(&cc.egui_ctx)` part helps a egui desktop show the image you request from openai later.
+`egui_extras::install_image_loaders(&cc.egui_ctx)` part helps a egui desktop app to show the images you request from openai later.
 
-Then, we have the `update` function that most of the app logcis are handled.
+Then, we have the `update` function that most of the main works are done.
 
 ```rs
 fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
@@ -536,9 +541,9 @@ fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
 }
 ```
 
-Here, we handle show some error message when there was some issues or user input is empty with description.
+Here, we show some error messages when there are some issues or user input is empty etc with description.
 
-When user use a proper prompt, the app requests an image url with this part.
+When user use a proper prompt with input, the app requests an image url with this part.
 
 ```rs
 tokio::task::spawn(async move {
@@ -559,7 +564,7 @@ tokio::task::spawn(async move {
 });
 ```
 
-We can use this becausee we included `runtime.block_on` part in the main function before and we can update the app state with an async function `fetch_image_url` from image.rs.
+We can use this because we included `runtime.block_on` part in the main function before and we can update the app state with an async function `fetch_image_url` from image.rs.
 
 ```rs
 use std::error::Error;
@@ -619,9 +624,9 @@ if ui.button("Download").clicked() {
 }
 ```
 
-You can make `download_and_save_file` function similar to this. You can refer to [native_dialog] package docs.
+`download_and_save_file` function is similar to this. [native_dialog] was used to help the process.
 
-It will first ask a user where to save an iamge and a file name to use. Then, it will use the url to download and save it with the information.
+When download button is clicked, the app will first ask a user where to save an image and a file name to use. Then, it will use the url from openai to download and save it.
 
 ```rs
 use native_dialog::FileDialog;
@@ -649,7 +654,9 @@ pub fn download_and_save_file(url: &str) -> Result<(), Box<dyn std::error::Error
 }
 ```
 
-Then, you can use `$cargo run --release` or and 
+You can test the app with `$cargo run --release` after you set the project properly. You can use "Hello world" or other prompts and see something similar to this.
+ 
+![Rust Desktop App Example](https://github.com/steadylearner/chatgpt/blob/main/blogs/images/rustdesktopappexample.png?raw=true)
 
 ## Packaging for distribution
 
@@ -683,9 +690,9 @@ short_description = "An example ChatGPT Rust egui application by Steadylearner"
 long_description = """
 An example ChatGPT Rust egui application by Steadylearner
 """
-``````
+```
 
-Then, it will create a desktop app `eguichatgpt` in your target/release/bundle/osx/ SteadylearnerChatGPT.app/Contents/MacOS folder.
+Then, it will create a desktop app `eguichatgpt` in your target/release/bundle/osx/SteadylearnerChatGPT.app/Contents/MacOS folder. You can execute and reuse it to create images whenever you want.
 
 ## Conclusion
 

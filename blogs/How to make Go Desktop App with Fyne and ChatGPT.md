@@ -26,6 +26,10 @@ I plan to include more examples with other programming languages, so feel free t
 
 [You can also hire me if you need a full stack developer for your projects.][Hire me]
 
+The app you will test will be similar to this. You will be able to use it to make a social media profile, blog cover, community image and more.
+
+![Go Desktop App Example](https://github.com/steadylearner/chatgpt/blob/main/blogs/images/gochatpgtappexample.png?raw=true)
+
 ## Prerequisites
 
 You can skip these and go to **Code** if you have done similar things already.
@@ -226,7 +230,7 @@ func init() {
 }
 ```
 
-Use the folder path you want to save `images` and use your own **OPENAI_API_KEY** instead. Then, you can build your own desktop app with commands like this.
+Use another folder path to save images and use your own **OPENAI_API_KEY*. Then, you can build your own desktop app with commands like this.
 
 ```console
 $fyne package -os darwin -icon icon.png --name ChatGPT
@@ -544,7 +548,10 @@ func saveImage(url string, w fyne.Window) {
 }
 ```
 
-When you use `$go run .` with the correct set up you will see a desktop app similar to the cover of this post.
+You can test the app with `$go run .` after you set the project properly. You can use "Hello world" or other prompts and see something similar to this.
+
+![Go Desktop App Example](https://github.com/steadylearner/chatgpt/blob/main/blogs/images/gochatpgtappexample.png?raw=true)
+
 
 ## Packaging for distribution
 
