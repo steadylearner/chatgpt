@@ -664,7 +664,7 @@ Before that, you will first have to edit your Cargo.toml to include more fields 
 
 You can refer to this and edit yours.
 
-``toml
+```toml
 [package]
 name = "eguichatgpt"
 description = "An example ChatGPT Rust egui application by Steadylearner"
