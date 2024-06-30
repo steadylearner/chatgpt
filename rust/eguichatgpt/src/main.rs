@@ -140,9 +140,6 @@ impl eframe::App for SteadylearnerChatGptApp {
     }
 }
 
-// TODO
-// 1. Find how to make a production app with it
-
 // $cargo new eguichatgpt
 // $cargo watch -x 'run --release'
 

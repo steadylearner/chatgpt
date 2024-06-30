@@ -64,7 +64,7 @@ func main() {
 
 Then, use `$go run .` and you will see "Hello, World!" in your console.
 
-[You can include more files similar to what you can see here.](https://github.com/steadylearner/chatgpt/tree/main/golang/chatgpt)
+[You can include more files similar to what you can see here.](https://github.com/steadylearner/chatgpt/tree/main/golang)
 
 ### 3. Get OpenAI API key
 
@@ -339,20 +339,6 @@ func CreateText() {
 }
 ```
 
-We already included this code snippet to index.ts file.
-
-```go
-{
-  Name:    "text",
-  Aliases: []string{"t"},
-  Usage:   "Create a text based on a prompt",
-  Action: func(cCtx *cli.Context) error {
-    CreateText()
-    return nil
-  },
-},
-```
-
 So we can test it with `$go run . text` and you will see some messages like this.
 
 You can use your own question instead of "What does steadylearner mean?"
@@ -543,7 +529,7 @@ Then, you can use `$chatgpt text` or `$chatgpt image` to use the CLI you made he
 
 ## Conclusion
 
-You have learned how to create simple CLIs for text and image using TypeScript and [openai-go]. 
+You have learned how to create simple CLIs for text and image using Go and [openai-go]. 
 
 You can extend these examples to create more complex applications. 
 

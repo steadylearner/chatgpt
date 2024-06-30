@@ -4,5 +4,6 @@
 * [How to use ChatGPT with Rust](https://www.onlycoiners.com/user/steadylearner/blog/how-to-use-chatgpt-with-rust)
 * [How to use ChatGPT with TypeScript](https://www.onlycoiners.com/user/steadylearner/blog/how-to-use-chatgpt-with-typescript)
 * [How to use ChatGPT with Go](https://www.onlycoiners.com/user/steadylearner/blog/how-to-use-chatgpt-with-go)
-* [Desktop App with Go](https://github.com/steadylearner/chatgpt/tree/main/golang/app)
+* [How to make Rust Desktop App with Egui and ChatGPT](https://www.onlycoiners.com/user/steadylearner/blog/how-to-make-rust-desktop-app-with-egui-and-chatgpt)
+* [How to make Go Desktop App with Fyne and ChatGPT](https://www.onlycoiners.com/user/steadylearner/blog/how-to-make-go-desktop-app-with-fyne-and-chatgpt)
 
